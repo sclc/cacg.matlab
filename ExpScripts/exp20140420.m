@@ -1,37 +1,26 @@
-function exp20140420()
+function exp20140420(machineId, matrixName, rhsDistType,eigenMax, eigenMin)
 % main function for experiment on 2014-03-29
+% local machine id = 0
+% at52  machine id = 1
+% matrixName: string
+% rhsDistType: string
+%%
+if machineId == 0
+    matrixPath_root='Y:\';
+elseif machineId == 1
+    matrixPath_root='/home/scl/MStore/';
+end
 
-%%
-matrixPath_root='Y:\';
-matrixPath_root='/home/scl/MStore';
 % %%
-matrixPath_foldername='mesh2e1\';
-matrixPath_filename='mesh2e1.mtx';
-eigenValue_max = 381.3006;
-eigenValue_min = 1.3132;
-% eigenValue_max = 491.70050638;
-% eigenValue_min = 1;
-%%
-% matrixPath_foldername='bcsstk27\';
-% matrixPath_filename='bcsstk27.mtx';
-% eigenValue_max = 3465100;
-% eigenValue_min = 143.5646;
-% eigenValue_max = 4307014.91811036;
-% eigenValue_min = -1610287.04470819;
-%%
-% matrixPath_foldername='nasa4704\';
-% matrixPath_filename='nasa4704.mtx';
-% eigenValue_max = 206690000;
-% eigenValue_min = 4.9613;
-% eigenValue_max = 338172337.923466;
-% eigenValue_min = -102210985.590486;
-%%
-% matrixPath_foldername='consph\';
-% matrixPath_filename='consph.mtx';
-% eigenValue_max = 72593;
-% eigenValue_min = 0.0077;
-% % eigenValue_max = 104498.0369333;
-% % eigenValue_min = -72325.6449084;
+if machineId == 0
+matrixPath_foldername=strcat(matrixName,'\');
+elseif machineId == 1
+    matrixPath_foldername=strcat(matrixName,'/');
+end
+matrixPath_filename=strcat( matrixName , '.mtx');
+eigenValue_max = eigenMax;
+eigenValue_min = eigenMin;
+
 %%
 matrixPath = strcat (matrixPath_root, matrixPath_foldername, matrixPath_filename);
 
@@ -39,8 +28,10 @@ matrixPath = strcat (matrixPath_root, matrixPath_foldername, matrixPath_filename
 
 %%
 rhsPath_root='Y:\';
-
+rhsPath_root='/home/scl/MStore';
+%%
 rhsPath_foldername='mesh2e1\uniform\';
+%%
 % rhsPath_foldername='mesh2e1\normal\';
 % rhsPath_foldername='nasa4704\uniform\';
 % rhsPath_foldername='nasa4704\normal\';
@@ -75,7 +66,7 @@ for blocksize = 1:2
             , 's',int2str(s_k),'.csv');
         csvwrite(outputfilename, hist);
         
-%         plot (hist(:,1), log10(hist(:,2)))
+        %         plot (hist(:,1), log10(hist(:,2)))
         clear X;
     end
     clear RHS;
