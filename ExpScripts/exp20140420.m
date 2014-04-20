@@ -1,4 +1,4 @@
-function exp20140420(machineId, matrixName, rhsDistType,eigenMax, eigenMin)
+function exp20140420(machineId, matrixName, rhsDistType,eigenMax, eigenMin, expId)
 % main function for experiment on 2014-03-29
 % local machine id = 0
 % at52  machine id = 1
@@ -6,53 +6,53 @@ function exp20140420(machineId, matrixName, rhsDistType,eigenMax, eigenMin)
 % rhsDistType: string
 %%
 if machineId == 0
+    sepSym = '\';
+elseif machineId == 1
+    sepSym = '/';
+end
+%%
+if machineId == 0
     matrixPath_root='Y:\';
 elseif machineId == 1
     matrixPath_root='/home/scl/MStore/';
 end
 
-% %%
-if machineId == 0
-matrixPath_foldername=strcat(matrixName,'\');
-elseif machineId == 1
-    matrixPath_foldername=strcat(matrixName,'/');
-end
+%%
+matrixPath_foldername=strcat(matrixName,sepSym);
+%
 matrixPath_filename=strcat( matrixName , '.mtx');
+%
 eigenValue_max = eigenMax;
 eigenValue_min = eigenMin;
 
 %%
 matrixPath = strcat (matrixPath_root, matrixPath_foldername, matrixPath_filename);
-
+solverName = 'bcbcg';
+solverPath = strcat ('..',sepSym, solverName);
+cd(solverPath);
 [A,rows,cols,entries,rep,field,symm] = mmread(matrixPath);
 
 %%
-rhsPath_root='Y:\';
-rhsPath_root='/home/scl/MStore';
-%%
-rhsPath_foldername='mesh2e1\uniform\';
-%%
-% rhsPath_foldername='mesh2e1\normal\';
-% rhsPath_foldername='nasa4704\uniform\';
-% rhsPath_foldername='nasa4704\normal\';
-% rhsPath_foldername='bcsstk27\uniform\';
-% rhsPath_foldername='bcsstk27\normal\';
-% rhsPath_foldername='consph\uniform\';
-% rhsPath_foldername='consph\normal\';
-
-rhs_prefixName = 'mesh2e1_';
-% rhs_prefixName = 'bcsstk27_';
-% rhs_prefixName = 'consph_';
-% rhs_prefixName = 'nasa4704_';
-
+rhsPath_root=matrixPath_root;
+if rhsDistType == 0
+    rhsPath_foldername = strcat(matrixName,sepSym, 'uniform', sepSym);
+elseif rhsDistType == 1
+    rhsPath_foldername = strcat(matrixName,sepSym, 'normal' , sepSym);
+end
+% rhsPath_foldername='mesh2e1\uniform\';
+rhs_prefixName = strcat (matrixName, '_');
+% rhs_prefixName = 'mesh2e1_';
 rhs_prefix = strcat (rhsPath_root, rhsPath_foldername, rhs_prefixName);
-
 rhs_suffix = '.csv';
 %%
-maxIters = 200;
+maxIters = 50;
 tol = 1e-4;
 %%
-outputDir = 'X:\ExperimentalDataTemp\';
+if machineId == 0
+    outputDir = 'X:\ExperimentalDataTemp\';
+elseif machineId ==1
+    outputDir = '/home/scl/caExpStr';
+end
 %%
 for blocksize = 1:2
     
@@ -63,7 +63,7 @@ for blocksize = 1:2
         [X_hist, hist] = bcbcg_4(A, RHS, s_k, blocksize, X, eigenValue_max, eigenValue_min,maxIters, tol);
         
         outputfilename= strcat(outputDir, rhs_prefixName, 'bcbcg_b',int2str(blocksize) ...
-            , 's',int2str(s_k),'.csv');
+            , 's',int2str(s_k),'_expId_', int2str(expId),'.csv');
         csvwrite(outputfilename, hist);
         
         %         plot (hist(:,1), log10(hist(:,2)))
