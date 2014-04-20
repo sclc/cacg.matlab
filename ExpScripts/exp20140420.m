@@ -72,4 +72,6 @@ for blocksize = 1:2
     clear RHS;
 end
 
+expFolder = strcat('..',sepSym, 'ExpScripts');
+cd(expFolder)
 end
