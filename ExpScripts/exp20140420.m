@@ -51,7 +51,7 @@ tol = 1e-4;
 if machineId == 0
     outputDir = 'X:\ExperimentalDataTemp\';
 elseif machineId ==1
-    outputDir = '/home/scl/caExpStr';
+    outputDir = '/home/scl/caExpStore/';
 end
 %%
 for blocksize = 1:2
