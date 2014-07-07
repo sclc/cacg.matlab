@@ -18,32 +18,61 @@ elseif machineId == 1
 end
 
 %%
+global A rows cols;
 matrixPath_foldername=strcat(matrixName,sepSym);
 matrixPath_filename=strcat( matrixName , '.mtx');
 matrixPath = strcat (matrixPath_root, matrixPath_foldername, matrixPath_filename);
 [A,rows,cols,entries,rep,field,symm] = mmread(matrixPath);
+
 %%
+global eigenValue_max eigenValue_min;
 eigenValue_max = eigenMax;
 eigenValue_min = eigenMin;
 
 %%
-maxIters = 5000;
-tol = 1e-4;
-%%
+global outputDir;
 if machineId == 0
     outputDir = 'X:\ExperimentalDataTemp\';
 elseif machineId ==1
     outputDir = '/home/scl/caExpStore/';
 end
+%%    
+maxIters = 5000;
+tol = 1e-4;
 %%
-expFolder = strcat('..',sepSym, 'ExpScripts');
-cd(expFolder)
+exp_1(maxIters, tol);
 %%
-exp_1()
+% expFolder = strcat('..',sepSym, 'ExpScripts');
+% cd(expFolder)
 end
 %%
-function exp_1()
-    disp('ok')
+function exp_1(maxIters, tol)
+    global A rows;
+    %% to get eigenvectors and eigenvalutes
+    z=10;
+    [zEigenvector, zEigenvalue,eigsFlag] = eigs(A,z,'lm');
+    %% to build mrhs
+    %  No.1
+    expId = 1;
+    numCol = 5;
+    RHS = zEigenvector (:,1:numCol);
+    X   = zEigenvector (:,numCol+1:2*numCol);
+    %  No.2: 
+%     expId = 2;
+%     numCol = 10;
+%     RHS = zEigenvector (:,1:numCol);
+%     X   = rand (rows,numCol);
+    %% No.3:
+%     expId = 3;
+%     numCol = 10;
+%     RHS = rand (rows,numCol);
+%     X   = rand (rows,numCol);
+    %%
+    [res,histR] = bcg_1( A, RHS, X, maxIters, tol );
+    %% output data
+    global outputDir ;
+    outputfilename= strcat(outputDir, 'bcg_no',int2str(expId),'_b', int2str(numCol),'.csv');
+    csvwrite(outputfilename, histR);
 end
 %%
 
