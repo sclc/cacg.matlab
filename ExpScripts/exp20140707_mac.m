@@ -19,19 +19,39 @@ end
 
 %%
 matrixPath_foldername=strcat(matrixName,sepSym);
-%
 matrixPath_filename=strcat( matrixName , '.mtx');
-%
+matrixPath = strcat (matrixPath_root, matrixPath_foldername, matrixPath_filename);
+[A,rows,cols,entries,rep,field,symm] = mmread(matrixPath);
+%%
 eigenValue_max = eigenMax;
 eigenValue_min = eigenMin;
 
 %%
-matrixPath = strcat (matrixPath_root, matrixPath_foldername, matrixPath_filename);
+maxIters = 5000;
+tol = 1e-4;
+%%
+if machineId == 0
+    outputDir = 'X:\ExperimentalDataTemp\';
+elseif machineId ==1
+    outputDir = '/home/scl/caExpStore/';
+end
+%%
+expFolder = strcat('..',sepSym, 'ExpScripts');
+cd(expFolder)
+%%
+exp_1()
+end
+%%
+function exp_1()
+    disp('ok')
+end
+%%
+
+function exp_old ()
+%%
 solverName = 'bcbcg';
 solverPath = strcat ('..',sepSym, solverName);
 cd(solverPath);
-[A,rows,cols,entries,rep,field,symm] = mmread(matrixPath);
-
 %%
 rhsPath_root=matrixPath_root;
 if rhsDistType == 0
@@ -45,16 +65,7 @@ rhs_prefixName = strcat (matrixName, '_');
 rhs_prefix = strcat (rhsPath_root, rhsPath_foldername, rhs_prefixName);
 rhs_suffix = '.csv';
 %%
-maxIters = 5000;
-tol = 1e-4;
-%%
-if machineId == 0
-    outputDir = 'X:\ExperimentalDataTemp\';
-elseif machineId ==1
-    outputDir = '/home/scl/caExpStore/';
-end
-%%
-for blocksize = 8:10
+for blocksize = 1:1
     
     rhs_name = strcat(rhs_prefix ,int2str(blocksize) ,rhs_suffix);
     RHS = csvread(rhs_name);
@@ -74,7 +85,5 @@ for blocksize = 8:10
     clear RHS;
 end
 %%
-expFolder = strcat('..',sepSym, 'ExpScripts');
-cd(expFolder)
-%%
+
 end
