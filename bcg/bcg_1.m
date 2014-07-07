@@ -23,7 +23,7 @@ for i = 1:maxIter
     
     hist_residual(i+1,:) = [RelativeErrorCal(R, RHS,1,1)];
     if hist_residual(i+1,1) < tol
-        fprint ('final norm is %dth = %20.16f\n',i,hist_residual(i+1,1));
+        fprintf ('final norm is %dth = %20.16f\n',i,hist_residual(i+1,1));
         break;
     end
     
