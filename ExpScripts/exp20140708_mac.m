@@ -1,4 +1,4 @@
-function exp20140707_home(machineId, matrixName, rhsDistType,eigenMax, eigenMin, expId)
+function exp20140708_mac(machineId, matrixName, rhsDistType,eigenMax, eigenMin, expId)
 % main function for experiment on 2014-03-29
 % windows on mac machine id = 0
 % linux   machine id = 1
@@ -56,7 +56,7 @@ end
 function exp_1(maxIters, tol)
     global A rows;
 %% to get eigenvectors and eigenvalutes
-    z=200;
+    z=250;
     [zEigenvector, zEigenvalue,eigsFlag] = eigs(A,z,'lm');
     [zSmEigenvector, zSmEigenvalue,eigsSmFlag] = eigs(A,z,'sm');
 %% to build mrhs
@@ -94,9 +94,9 @@ function exp_1(maxIters, tol)
 % %       eigenvector as initial X
 % % if division > numSection, floor() return 0
 % % imp
-    expId = 5;
+    expId = 52;
     numSection = 20;
-    numCol = 5;
+    numCol = 10;
     division = 50;
     assert(numCol*numSection <= z, ...
         'we do not have enough calculated eigenvectors');
@@ -112,8 +112,9 @@ function exp_1(maxIters, tol)
         end
     end
 %     X   = zEigenvector (:,1:numCol);
-    X   = zEigenvector (:,(numSection * numCol+1):(numCol+ numSection * numCol));
+%     X   = zEigenvector (:,(numSection * numCol+1):(numCol+ numSection * numCol));
 %     X   = zEigenvector (:,(numSection * numCol+100+1):(numCol+ numSection * numCol+100));
+    X   = zEigenvector (:,z-numCol+1:z);
 % No.6: mrhs randomly generated
 %       eigenvector as initial X
 %     expId = 6;
@@ -121,7 +122,27 @@ function exp_1(maxIters, tol)
 %     RHS = rand (rows,numCol);
 % %     X   = zEigenvector (:,1:numCol);
 %     X   = zSmEigenvector (:,1:numCol);
-
+% % No.7: linear combination of eigenvectors, multiplied by random float
+% %       eigenvector as initial X
+% % if division > numSection, floor() return 0
+% % imp
+%     expId = 7;
+%     numSection = 20;
+%     numCol = 1;
+%     division = 50;
+%     assert(numCol*numSection <= z, ...
+%         'we do not have enough calculated eigenvectors');
+%     RHS = zeros (rows,numCol);
+%     for NumRhsColCounter = 1: numCol
+% 
+%         for NumSectionCounter = 1:numSection
+%             RHS (:, NumRhsColCounter) = RHS (:, NumRhsColCounter) + ...
+%                 rand() * zEigenvector(:,NumSectionCounter); 
+%         end
+%     end
+% 	X   = zEigenvector (:,1+numCol:numCol*2);
+%     X   = zEigenvector (:,(numSection * numCol+1):(numCol+ numSection * numCol));
+%     X   = zEigenvector (:,(numSection * numCol+100+1):(numCol+ numSection * numCol+100));
 %%
     [res,histR] = bcg_1( A, RHS, X, maxIters, tol );
     %% output data
