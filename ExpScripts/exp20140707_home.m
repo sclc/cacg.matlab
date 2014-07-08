@@ -1,7 +1,8 @@
-function exp20140707_mac(machineId, matrixName, rhsDistType,eigenMax, eigenMin, expId)
+function exp20140707_home(machineId, matrixName, rhsDistType,eigenMax, eigenMin, expId)
 % main function for experiment on 2014-03-29
-% windows machine id = 0
+% windows on mac machine id = 0
 % linux   machine id = 1
+% windows at home id = 2
 % matrixName: string
 % rhsDistType: string
 %%
@@ -9,12 +10,16 @@ if machineId == 0
     sepSym = '\';
 elseif machineId == 1
     sepSym = '/';
+elseif machineId == 2
+    sepSym = '\';
 end
 %%
 if machineId == 0
     matrixPath_root='Y:\';
 elseif machineId == 1
     matrixPath_root='/home/scl/MStore/';
+elseif machineId == 2
+    matrixPath_root='E:\MStore\';
 end
 
 %%
@@ -33,12 +38,14 @@ eigenValue_min = eigenMin;
 global outputDir;
 if machineId == 0
     outputDir = 'X:\ExperimentalDataTemp\';
-elseif machineId ==1
+elseif machineId == 1
     outputDir = '/home/scl/caExpStore/';
+elseif machineId == 2
+    outputDir = 'E:\workspace\CAKSMsMatlabProj\ExperimentalDataTemp\';
 end
 %%    
 maxIters = 5000;
-tol = 1e-4;
+tol = 1e-6;
 %%
 exp_1(maxIters, tol);
 %%
@@ -48,26 +55,74 @@ end
 %%
 function exp_1(maxIters, tol)
     global A rows;
-    %% to get eigenvectors and eigenvalutes
-    z=10;
+%% to get eigenvectors and eigenvalutes
+    z=200;
     [zEigenvector, zEigenvalue,eigsFlag] = eigs(A,z,'lm');
-    %% to build mrhs
-    %  No.1
-    expId = 1;
-    numCol = 5;
-    RHS = zEigenvector (:,1:numCol);
-    X   = zEigenvector (:,numCol+1:2*numCol);
-    %  No.2: 
+    [zSmEigenvector, zSmEigenvalue,eigsSmFlag] = eigs(A,z,'sm');
+%% to build mrhs
+% No.1:
+%     expId = 1;
+%     numCol = 5;
+%     RHS = zEigenvector (:,1:numCol);
+%     X   = zEigenvector (:,numCol+1:2*numCol);
+% No.2:
 %     expId = 2;
 %     numCol = 10;
 %     RHS = zEigenvector (:,1:numCol);
 %     X   = rand (rows,numCol);
-    %% No.3:
+% No.3: random mrhs, random X
 %     expId = 3;
 %     numCol = 10;
 %     RHS = rand (rows,numCol);
 %     X   = rand (rows,numCol);
-    %%
+% No.4: linear combination of eigenvectors, no overlapping
+%       random initial X
+%     expId = 4;
+%     numSection = 2;
+%     numCol = 2;
+%     assert(numCol*numSection <= z, ...
+%         'we do not have enough calculated eigenvectors');
+%     RHS = zeros (rows,numCol);
+%     for NumRhsColCounter = 1: numCol
+%         for NumSectionCounter = 1:numSection
+%             RHS (:, NumRhsColCounter) = RHS (:, NumRhsColCounter) + ...
+%                 zEigenvector(:, numSection * (NumRhsColCounter - 1) + NumSectionCounter);
+%         end
+%     end
+%     X   = rand (rows,numCol);
+% % No.5: linear combination of eigenvectors, no overlapping
+% %       eigenvector as initial X
+% % if division > numSection, floor() return 0
+% % imp
+    expId = 5;
+    numSection = 20;
+    numCol = 5;
+    division = 50;
+    assert(numCol*numSection <= z, ...
+        'we do not have enough calculated eigenvectors');
+    RHS = zeros (rows,numCol);
+    for NumRhsColCounter = 1: numCol
+        for NumSectionCounter = 1:numSection
+%             RHS (:, NumRhsColCounter) = RHS (:, NumRhsColCounter) + ...
+%                 zEigenvector(:, max(0, numSection * (NumRhsColCounter - 2) + ... 
+%                 floor(numSection/division)) +  NumSectionCounter);
+            RHS (:, NumRhsColCounter) = RHS (:, NumRhsColCounter) + ...
+                zEigenvector(:, max(0, numSection * (NumRhsColCounter - 1) - ... 
+                floor(numSection/division)) +  NumSectionCounter); 
+        end
+    end
+%     X   = zEigenvector (:,1:numCol);
+    X   = zEigenvector (:,(numSection * numCol+1):(numCol+ numSection * numCol));
+%     X   = zEigenvector (:,(numSection * numCol+100+1):(numCol+ numSection * numCol+100));
+% No.6: mrhs randomly generated
+%       eigenvector as initial X
+%     expId = 6;
+%     numCol = 10;
+%     RHS = rand (rows,numCol);
+% %     X   = zEigenvector (:,1:numCol);
+%     X   = zSmEigenvector (:,1:numCol);
+
+%%
     [res,histR] = bcg_1( A, RHS, X, maxIters, tol );
     %% output data
     global outputDir ;
