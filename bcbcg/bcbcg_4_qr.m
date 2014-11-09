@@ -16,6 +16,8 @@ InterestedColIdx=1;
 hist_residual(1,:) = [1 sum(abs(diag(PHI))) norm(X(:,InterestedColIdx)) ...
     dot( X(:,InterestedColIdx), RHS(:,InterestedColIdx)) ...
     abs(dot( X(:,InterestedColIdx), R(:,InterestedColIdx)))];
+% the problem of this method is that s bases need s TSQR, so s MPI allreduce is necessary
+%	communication-avoiding is not possible
 for ind = 1:maxIters
     % generate s_k dim subspace
     s_k = uint32(s_k);
