@@ -1,0 +1,13 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "RemoteSwapBCBCG"
+		},
+		{
+			"follow_symlinks": true,
+			"path": "RemoteSwapExpScripts"
+		}
+	]
+}
