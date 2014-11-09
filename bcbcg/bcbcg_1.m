@@ -6,7 +6,13 @@ function [X,hist_residual] = bcbcg_1(A, RHS, s_k, blocksize, X, maxIters, tol)
     s_alpha = 2.0 / (eigenValue_max - eigenValue_min);
     s_beta  = - (eigenValue_max + eigenValue_min) / (eigenValue_max - eigenValue_min);
     R = RHS - A*X;
-    hist_residual(1, :) = RelativeErrorCal(R, RHS , 1, 1);
+    hist_residual(1, :) = [0,RelativeErrorCal(R, RHS , 1, 1)];
+
+    %% add return cotrol after comparing with tol
+    if  hist_residual(1, 2)<tol
+        return
+    end
+
     for ind = 1:maxIters
         % generate s_k dim subspace
         s_k = uint32(s_k);
@@ -39,7 +45,12 @@ function [X,hist_residual] = bcbcg_1(A, RHS, s_k, blocksize, X, maxIters, tol)
         % update x
         X = X + Q * para_alpha;
         R = R - A_Q * para_alpha;
-        hist_residual(ind+1, :) = RelativeErrorCal(R, RHS , 1, 1);
+        hist_residual(ind+1, :) = [ind, RelativeErrorCal(R, RHS , 1, 1)];
+        
+        %% add return cotrol after comparing with tol
+        if  hist_residual(ind+1, 2)<tol
+            return
+        end
         
       
     end
