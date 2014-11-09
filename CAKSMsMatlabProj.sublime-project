@@ -3,11 +3,11 @@
 	[
 		{
 			"follow_symlinks": true,
-			"path": "bcbcg"
+			"path": "RemoteSwapBCBCG"
 		},
 		{
 			"follow_symlinks": true,
-			"path": "ExpScripts"
+			"path": "RemoteSwapExpScripts"
 		}
 	]
 }
