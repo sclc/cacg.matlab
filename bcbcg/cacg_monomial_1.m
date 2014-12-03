@@ -23,7 +23,7 @@ function [X,hist_residual] = cacg_monomial_1(A, RHS, s_k, blocksize, X, maxIters
             elseif dimInd == 2
                 SS (:, blocksize+1:blocksize*2) = A * R;
             else
-                SS(:, blocksize*(dimInd-1)+1:blocksize*dimInd) = (A^double((dimInd-1))) * R;
+                SS(:, blocksize*(dimInd-1)+1:blocksize*dimInd) = A * SS(:, blocksize*(dimInd -2)+1:blocksize*(dimInd -1));
             end           
         end
         % A-orthogonalization 
@@ -44,7 +44,8 @@ function [X,hist_residual] = cacg_monomial_1(A, RHS, s_k, blocksize, X, maxIters
         % update x
         X = X + Q * para_alpha;
         R = R - A_Q * para_alpha;
-        hist_residual(ind+1, :) = [ind, RelativeErrorCal(R, RHS , 1, 1)];
+        R_check = RHS - A*X;
+        hist_residual(ind+1, :) = [ind, RelativeErrorCal(R_check, RHS , 1, 1)];
         
         %% add return cotrol after comparing with tol
         if  hist_residual(ind+1, 2)<tol
