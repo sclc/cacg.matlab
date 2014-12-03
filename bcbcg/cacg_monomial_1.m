@@ -23,7 +23,7 @@ function [X,hist_residual] = cacg_monomial_1(A, RHS, s_k, blocksize, X, maxIters
             elseif dimInd == 2
                 SS (:, blocksize+1:blocksize*2) = A * R;
             else
-                SS(:, blocksize*(dimInd-1)+1:blocksize*dimInd) = A^(dimInd-1) * R;
+                SS(:, blocksize*(dimInd-1)+1:blocksize*dimInd) = (A^double((dimInd-1))) * R;
             end           
         end
         % A-orthogonalization 
