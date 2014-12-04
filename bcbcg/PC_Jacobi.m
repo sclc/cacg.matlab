@@ -5,10 +5,10 @@ function [A] = PC_Jacobi(A)
 	assert (nrow==ncol, 'this function need a square matrix as input');
 
 	for ind=1:nrow
-		assert (diaA(ind)~=0, 'this function cannot handle zero value element');
-		diaRoot = sqrt(diaA(ind));
-		A(ind,:) = A(ind,:) ./ diaRoot;
-		A(:,ind) = A(:,ind) ./ diaRoot;
+		assert (diagA(ind)~=0, 'this function cannot handle zero value element');
+		diagRoot = sqrt(diagA(ind));
+		A(ind,:) = A(ind,:) ./ diagRoot;
+		A(:,ind) = A(:,ind) ./ diagRoot;
 	end
 
 end
