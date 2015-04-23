@@ -45,7 +45,8 @@ function [X,hist_residual] = bcbcg_1(A, RHS, s_k, blocksize, X, maxIters, tol)
         % update x
         X = X + Q * para_alpha;
         R = R - A_Q * para_alpha;
-        hist_residual(ind+1, :) = [ind, RelativeErrorCal(R, RHS , 1, 1)];
+        R_check = RHS - A*X;
+        hist_residual(ind+1, :) = [ind, RelativeErrorCal(R_check, RHS , 1, 1)];
         
         %% add return cotrol after comparing with tol
         if  hist_residual(ind+1, 2)<tol
