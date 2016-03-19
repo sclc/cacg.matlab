@@ -4,7 +4,8 @@ PlotConvergenceHistoryWithXY_SingleMatrixMultipleSolver_region <- function(dataf
                                                                     ,figTitle="Convergence History",y_axis_label="log(||r1||/||b1||)"
                                                                     ,legendPos="topright",range_factor=1.0, x_axis_gap=20, y_axis_gap=1
                                                                     ,tol=1e-16, linelowerest = 1e-16, cexVal=1.0
-                                                                    ,startP=1, endP=length(dataframeToPlot[,1]))
+                                                                    ,startP=1, endP=length(dataframeToPlot[,1]) 
+                                                                    ,titleSize=1 )
 {
   dataframeToPlot[is.na(dataframeToPlot)]<-linelowerest;
   num_solver_types<-ncol(dataframeToPlot) - 1 ;
@@ -47,7 +48,7 @@ PlotConvergenceHistoryWithXY_SingleMatrixMultipleSolver_region <- function(dataf
   axis(side=2, at=10^y_axis);
   
   grid(nx=10,ny=10,col="black");
-  title(figTitle);
+  title(figTitle, cex.main=titleSize);
   ##
   names<-colnames(dataframeToPlot)
   line_name<-names[2:ncol(dataframeToPlot)];
