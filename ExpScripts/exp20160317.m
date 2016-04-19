@@ -1,4 +1,4 @@
-function exp20160306(machineId, matrixName, eigenMax, eigenMin, expId)
+function exp20160317(machineId, matrixName, eigenMax, eigenMin, expId)
 % main function for experiment on 2016-03-06
 % windows on mac machine id = 0
 % linux   machine id = 1
@@ -72,7 +72,7 @@ addpath /home/scl/SkrGitRepo/cacg.matlab.git/bcbcg -end
   computingLabel = strcat(matrixName,'_bcbcg_4',' ... ...');
   disp(computingLabel)
   numCol = 1;
-  s_k = 1; 
+  s_k = 6; 
   exp_section_1(maxIters, tol, matrixName, numCol, s_k);
 
 end
@@ -117,43 +117,55 @@ function exp_section_1(maxIters, tol, matrixName, numCol, s_k)
 	RHS = rand (rows,1);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%% ! call solver
-	debug = 0;
+	debug = 1;
 	if (debug)
 		disp ('s_k')
 		isinteger(s_k)
+		disp (s_k)
 
 		disp ('numCol')
 		isinteger(numCol)
+		disp (numCol)
+		
 
 		disp ('maxIters')
 		isinteger(maxIters)
+		disp (maxIters)
 
 		disp ('tol')
 		isinteger (tol)
+		disp (tol)
 	end
 real eigen
 
    	global outputDir ;
 %%%%
 %% Chem97ZtZ
-% 	 real eigen: 1.0e+03, 5.3957
-%	gerog      : 2.2870e+03, 4.4197
-%	power iter : 1.3315e+03, 6.51141
+% 	 real eigen: 
+%	gerog      : 
+%	power iter : 
 %%%%
 
 %% Chem97ZtZ
-	eigens = [1.0e+03, 5.3957; 2.2870e+03, 4.4197; 1.3315e+03, 6.51141];
+%% power iteration
+%	eigens = [ 1.3315e+03, 5.3982; 2.2870e+03, 4.4197; 1.3292e+03, 25.1447];
+%% power iteration
+	eigens = [ 1.3315e+03, 5.3982; 2.2870e+03, 4.4197; 1.3292e+03, 4.4197];
+
+%% http://www.cise.ufl.edu/research/sparse/matrices/Nasa/nasa2146.html
+%% power iteration
+%	eigens = [ 1.0e+07 *3.2728, 1.0e+04 * 2.4183; 4.1984e+07, 0 ; 3.2468e+07, 8.4059e+05];
+%% power iteration + gerschgorin
+%	eigens = [ 1.0e+07 *3.2728, 1.0e+04 * 2.4183; 4.1984e+07, 0 ; 3.2468e+07, 0];
+
+
+%% http://www.cise.ufl.edu/research/sparse/matrices/Boeing/crystm01.html
+%% power iteration
+%	eigens = [ 1.0e-11 * 0.5306,1.0e-13 * 0.2324; 6.0298e-12, 0 ; 5.3040e-12, 1.0987e-12];
+%% power iteration + gerschgorin
+%	eigens = [ 1.0e-11 * 0.5306,1.0e-13 * 0.2324; 6.0298e-12, 0 ; 5.3040e-12, 0];
+
 	disp (eigens)
-
-
-
-%% http://www.cise.ufl.edu/research/sparse/matrices/FIDAP/ex13.html
-%	eigens = [1.0e+10, 1.0e-04; 1.9976e+10, 0.0; 1.2584e+10, 8.3444e+05];
-%	disp (eigens)
-
-%% http://www.cise.ufl.edu/research/sparse/matrices/Nasa/nasa2910.html
-%	eigens = [1.0e+08, 22.3577; 1.9962e+08, 0.0; 1.3324e+08, 1.1400e+04];
-%	disp (eigens)
 
 	for idx=1:3
 		%expId=idx;

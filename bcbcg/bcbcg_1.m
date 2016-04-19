@@ -1,7 +1,23 @@
+%%%%%%%%%%%%%%%%%%%%%%%%% ! start of function bcbcg_1
 function [X,hist_residual] = bcbcg_1(A, RHS, s_k, blocksize, X, maxIters, tol)
-%% block chebyshev basis conjugat gradient
-%% basic version
-%% test
+%%%%%%%%%%%%%%%%%% !
+% to solve the linear system AX=B
+%
+%	block chebyshev basis conjugat gradient
+%	basic version
+% 	test
+% input
+%	A  	  : sparse linear system
+%	RHS	  : B in AX=B
+%	s_k	  : step value defined as in s-step method
+%	blocksize : column of right-hand side B
+%	X	  : matrix as defined in AX=B
+%	maxIters  : iteration stops at the value of loops
+%	tol	  : convergence criteria
+% output
+%	X	  : result of the unknowns
+%
+%%%%%%%%%%%%%%%%%% !
     [eigenValue_max, eigenValue_min] = gerschgorin_1(A);
     s_alpha = 2.0 / (eigenValue_max - eigenValue_min);
     s_beta  = - (eigenValue_max + eigenValue_min) / (eigenValue_max - eigenValue_min);
@@ -38,8 +54,7 @@ function [X,hist_residual] = bcbcg_1(A, RHS, s_k, blocksize, X, maxIters, tol)
         
         % get parameter to update x
         A_Q = A * Q;
-        Qtran_A_Q = Q' * A_Q;
-        Qtran_A_Q_inv = inv(Qtran_A_Q);
+        Qtran_A_Q = Q' * A_Q; Qtran_A_Q_inv = inv(Qtran_A_Q);
         para_alpha = Qtran_A_Q_inv * Q'* R;
         
         % update x

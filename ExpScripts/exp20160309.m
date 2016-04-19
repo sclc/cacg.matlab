@@ -1,4 +1,4 @@
-function exp20160306(machineId, matrixName, eigenMax, eigenMin, expId)
+function exp20160309(machineId, matrixName, eigenMax, eigenMin, expId)
 % main function for experiment on 2016-03-06
 % windows on mac machine id = 0
 % linux   machine id = 1
@@ -72,7 +72,7 @@ addpath /home/scl/SkrGitRepo/cacg.matlab.git/bcbcg -end
   computingLabel = strcat(matrixName,'_bcbcg_4',' ... ...');
   disp(computingLabel)
   numCol = 1;
-  s_k = 1; 
+  s_k = 6; 
   exp_section_1(maxIters, tol, matrixName, numCol, s_k);
 
 end
@@ -142,7 +142,8 @@ real eigen
 %%%%
 
 %% Chem97ZtZ
-	eigens = [1.0e+03, 5.3957; 2.2870e+03, 4.4197; 1.3315e+03, 6.51141];
+	%eigens = [1.0e+03, 5.3957; 2.2870e+03, 4.4197; 1.3315e+03, 6.51141];
+	eigens = [1.0e+03, 5.3957; 2.2870e+03, 4.4197; 1.3315e+03, 4.4197];
 	disp (eigens)
 
 
@@ -157,7 +158,8 @@ real eigen
 
 	for idx=1:3
 		%expId=idx;
-		expId=idx+3;
+		%expId=idx+3;
+		expId=idx+6;
 		X = zeros (rows,1);
 		[X,hist_residual] = bcbcg_4(A, RHS, s_k, numCol, X, eigens(idx,1), eigens(idx,2), maxIters, tol);
     		outputfilename= strcat(outputDir, matrixName,'_bcbcg_4_no',int2str(expId),'_s', int2str(s_k),'_b', int2str(numCol),'.csv');

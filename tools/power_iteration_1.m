@@ -1,4 +1,4 @@
-function [ y, it_num ] = power_iteration_1 ( n, a, y, it_max, tol )
+function [ y, lambda, it_num ] = power_iteration_1 ( n, a, y, it_max, tol )
 
 %*****************************************************************************80
 %
@@ -44,7 +44,7 @@ function [ y, it_num ] = power_iteration_1 ( n, a, y, it_max, tol )
 %
 %    Output, integer IT_NUM, the number of iterations taken.
 %
-  debug = 0;
+  debug = 1;
 
   if ( debug )
     fprintf ( 1, '\n' );
@@ -103,7 +103,7 @@ function [ y, it_num ] = power_iteration_1 ( n, a, y, it_max, tol )
       fprintf ( 1, '  %5d  %14e  %14e  %14e\n', it_num, lambda, val_dif, sin_y1y2 );
     end
 
-    if ( val_dif <= tol )
+    if ( val_dif/lambda <= tol )
       break
     end 
 
