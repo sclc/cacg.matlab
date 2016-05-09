@@ -6,11 +6,11 @@ function [X,hist_residual] = bcg_1( A, RHS, X, maxIter, tol )
 % matIter are the max number of iteration 
 % tol is the breaking criteria, it will be compared to 
 %     relative residual |r|/|b|
-%    RColInd = 1;
-%    RHSColInd = 1;
+    RColInd = 1;
+    RHSColInd = 1;
     R = RHS - A * X;
-%    hist_residual(1,:)=[RelativeErrorCal(R, RHS, RColInd, RHSColInd)];
-    hist_residual(1, :) = [0,RelativeErrorCal(R, RHS , 1, 1)];
+    hist_residual(1,:)=[0,RelativeErrorCal(R, RHS, RColInd, RHSColInd)];
+%    hist_residual(1, :) = [0,RelativeErrorCal(R, RHS , 1, 1)];
     %fprintf ('first residual norm = %20.16f\n', hist_residual(1,1));
     Rtranspose_R= R' * R;
     P=R;
@@ -23,8 +23,8 @@ function [X,hist_residual] = bcg_1( A, RHS, X, maxIter, tol )
         
         Rtranspose_R_next = R' * R;
         
-%        hist_residual(i+1,:) = [RelativeErrorCal(R, RHS, RColInd, RHSColInd)];
-        hist_residual(i+1, :) = [i, RelativeErrorCal(R, RHS , 1, 1)];
+        hist_residual(i+1,:) = [i, RelativeErrorCal(R, RHS, RColInd, RHSColInd)];
+%        hist_residual(i+1, :) = [i, RelativeErrorCal(R, RHS , 1, 1)];
         if hist_residual(i+1,2) < tol
         %    fprintf ('final norm is %dth = %20.16f\n',i,hist_residual(i+1,1));
             return;
