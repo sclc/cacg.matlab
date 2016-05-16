@@ -50,7 +50,7 @@ addpath /home/scl/github.projs/cacg.matlab/tools -end
       outputDir = 'E:\workspace\CAKSMsMatlabProj\ExperimentalDataTemp\';
   end
   %%    
-  maxIters = 3;
+  maxIters = 20;
   %maxIters = 10000;
   tol = 1e-15; 
 
@@ -74,6 +74,7 @@ function exp_section_1(maxIters, tol, matrixName, numCol, s_k)
 
     [x,hist_residual] = cg( A, x, rhs, maxIters, tol );
     hist_residual
+    fprintf('res:%f\n',dot(x,x))
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% output data
     global outputDir ;
