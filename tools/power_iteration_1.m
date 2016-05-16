@@ -87,6 +87,7 @@ function [ y, lambda, it_num ] = power_iteration_1 ( n, a, y, it_max, tol )
     y_old = y;
 
     ay = a * y;
+    % use inner product to calculate lambda
     lambda = y' * ay;
     y = ay / norm ( ay );
 %    if ( lambda < 0.0 )
@@ -109,6 +110,8 @@ function [ y, lambda, it_num ] = power_iteration_1 ( n, a, y, it_max, tol )
 
   end
 
+ % consider lambda has already converged, so corresonding eigen-value should be 
+ % 	 the ration of ay and lambda
   y = ay / lambda;
 
   return
