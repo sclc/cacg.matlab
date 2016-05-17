@@ -104,7 +104,7 @@ function [ y, lambda, it_num ] = power_iteration_1 ( n, a, y, it_max, tol )
       fprintf ( 1, '  %5d  %14e  %14e  %14e\n', it_num, lambda, val_dif, sin_y1y2 );
     end
 
-    if ( val_dif/lambda <= tol )
+    if ( abs(val_dif/lambda) <= tol )
       break
     end 
 
